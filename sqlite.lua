@@ -28,6 +28,7 @@ int sqlite3_step(sqlite3_stmt *);
 int sqlite3_reset(sqlite3_stmt *);
 int sqlite3_finalize(sqlite3_stmt *);
 int sqlite3_bind_double(sqlite3_stmt *, int, double);
+int sqlite3_bind_int64(sqlite3_stmt *, int, int64_t);
 int sqlite3_bind_null(sqlite3_stmt *, int);
 int sqlite3_bind_text(sqlite3_stmt *, int, const char *, int, void(*)(void*));
 double sqlite3_column_double(sqlite3_stmt *, int);
@@ -252,6 +253,8 @@ local function stmt_bind(stmt, i, v)
 		check(stmt, C.sqlite3_bind_null(stmt, i))
 	elseif ty == "number" then
 		check(stmt, C.sqlite3_bind_double(stmt, i, v))
+	elseif ty == "cdata" then
+		check(stmt, C.sqlite3_bind_int64(stmt, i, v))
 	elseif ty == "string" then
 		check(stmt, C.sqlite3_bind_text(stmt, i, v, #v, SQLITE_TRANSIENT))
 	elseif ty == "table" then
