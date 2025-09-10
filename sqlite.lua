@@ -116,10 +116,18 @@ local function flatten_aux(t,x)
 	end
 end
 
+local function maybeparens(v)
+	if v:match("^%w+$") then
+		return v
+	else
+		return "("..v..")"
+	end
+end
+
 local function putlist(buf, values, sep)
 	for i,v in ipairs(values) do
 		if i>1 then buf:put(sep or ",") end
-		buf:put(v)
+		buf:put(maybeparens(v))
 	end
 end
 
